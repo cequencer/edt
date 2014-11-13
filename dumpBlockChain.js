@@ -1,10 +1,10 @@
-var levelup = require('levelup');
+var levelup = require('level');
 var Block = require('ethereumjs-lib').Block;
 var async = require('async');
 var rlp = require('rlp');
 
-var detailsDB = levelup('/home/null/.ethereum/AlethZero/details');
-var blocksDB = levelup('/home/null/.ethereum/AlethZero/blocks');
+var detailsDB = levelup('/home/TODO/.ethereum/AlethZero/details');
+var blocksDB = levelup('/home/TODO/.ethereum/AlethZero/blocks');
 
 detailsDB.get('best', {
   encoding: 'binary'

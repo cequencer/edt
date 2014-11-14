@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var Ethereum = require('ethereum-lib'),
+var Ethereum = require('ethereumjs-lib'),
   levelup = require('level'),
   through = require('through'),
   JSONStream = require('JSONStream'),
@@ -52,7 +52,7 @@ state.root = new Buffer(argv.root, 'hex');
 
 var ts = through(function write(data) {
   var key = data.key.toString('hex');
-  var value =  utils.BAToJSON(rlp.decode(data.value));
+  var value =  utils.baToJSON(rlp.decode(data.value));
   var parsed;
 
   if(argv.pp){

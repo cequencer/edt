@@ -16,9 +16,8 @@ var argv = parseArgs(process.argv.slice(2), {
   }
 });
 
-if(argv.h){
+if (argv.h) {
   var helpStr = '\
-  --pp            Prettish print. if now given defaults to JSON\n\
   --cpp           Reads the cpp clients db\n\
   --node          reads the node.js clients db\n\
   --i <string>    The location of some state DB\n\
@@ -40,7 +39,7 @@ if (argv.cpp) {
   argv.i = process.env.HOME + '/.ethereum/node/state';
 }
 
-var  Trie = Ethereum.Trie,
+var Trie = Ethereum.Trie,
   rlp = Ethereum.rlp,
   utils = Ethereum.utils,
   stateDB = levelup(argv.i),
@@ -52,27 +51,23 @@ state.root = new Buffer(argv.root, 'hex');
 
 var ts = through(function write(data) {
   var key = data.key.toString('hex');
-  var value =  utils.baToJSON(rlp.decode(data.value));
-  var parsed;
+  var value = utils.baToJSON(rlp.decode(data.value));
+  var parse = {
+    address: key,
+    nonce: value[0],
+    balance: value[1],
+    stateRoot: value[2],
+    codeHash: value[3]
+  };
 
-  if(argv.pp){
-    //pretty print
-    parsed =  'key: ' + key;
-    parsed += 'decoded: ' + value  + '\n\n';
-  }else{
-    //json
-    parsed =  {
-      key:  key,
-      value: value
-    };
-  }
+  // if(parse.codeHash !== utils.emptyHash.toString('hex') )
 
   this.queue(parsed); //data *must* not be null
 });
 
 stream.pipe(ts);
 
-if(!argv.pp){
+if (!argv.pp) {
   ts = ts.pipe(JSONStream.stringify());
 }
 

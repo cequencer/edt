@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const ethereum = require('ethereumjs-lib');
 const Trie = ethereum.Trie;
 const VM = ethereum.VM;
@@ -7,6 +6,7 @@ const Account = ethereum.Account;
 const Block = ethereum.Block;
 const Tx = ethereum.Transaction;
 const ethUtils = ethereum.utils;
+const ecdsa = require('secp256k1');
 const async = require('async');
 
 var trie = new Trie();
@@ -37,7 +37,8 @@ function runTx(cb) {
   tx.gasLimit = new Buffer([1,0,0,0,0,0,0]);
 
   var block = new Block();
-  vm = new VM(trie);
+  var vm = new VM(trie);
+
   vm.onStep = onStep;
   vm.runTx(tx, block, cb)
 }

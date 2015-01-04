@@ -42,18 +42,25 @@ ems looks local first the globally
 
   **ems-export**(1)  
     exports the current state to a json file  
+
   **ems-import**(1)  
     imports the current state from a json file  
+
   **ems-init**(1)  
     initailizes the current directory with a state directory  
+
   **ems-commit**(1)  
     commits the current state  
-  **ems-root**(1)
-    sets or gets the current state root
+  
+  **ems-root**(1)  
+    sets or gets the current state root  
+
   **ems-log**(1)  
     show a log of commits  
+
   **ems-account**(1)  
     account creation and manipulation   
+
   **ems-label**(1)  
     labal acounts for easy access   
 

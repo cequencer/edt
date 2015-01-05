@@ -49,14 +49,11 @@ ems looks local first the globally
   **ems-init**(1)  
     initailizes the current directory with a state directory  
 
-  **ems-commit**(1)  
-    commits the current state  
+  **ems-mark**(1)  
+    marks the current state in a log so that it can be used again later  
   
   **ems-root**(1)  
     sets or gets the current state root  
-
-  **ems-log**(1)  
-    show a log of commits  
 
   **ems-account**(1)  
     account creation and manipulation   

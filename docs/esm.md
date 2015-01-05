@@ -34,7 +34,7 @@ ems looks local first the globally
 ## OPTIONS
 
   --help  
-    display help
+    display help   
   --path
     the path to the state db.
 

@@ -23,9 +23,8 @@ if (argv.h || !argv._.length) {
   process.exit();
 }
 
-if (!argv.path) {
-  argv.path = './.ethereum/state'
-}
+//set the path
+require('./path.js')(argv);
 
 var Trie = Ethereum.Trie,
   Account = Ethereum.Account,

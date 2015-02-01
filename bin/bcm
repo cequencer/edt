@@ -1,0 +1,89 @@
+#!/usr/bin/env node
+
+var levelup = require('level');
+var Block = require('ethereumjs-lib').Block;
+var async = require('async');
+var rlp = require('rlp');
+var columnify = require('columnify');
+var parseArgs = require('minimist');
+
+var argv = parseArgs(process.argv.slice(2), {
+  boolean: ['h', 'init'],
+  string: ['path', 'root'],
+  alias: {
+    'help': 'h',
+    'path': 'p',
+    'cpp': 'c',
+    'node': 'n'
+  }
+});
+
+var usageStr = 'USAGE: bcm <command> [OPTION] \n\
+BlockChain Manager (bcm) allows you to export the blockchain as json \n\n';
+
+var commands = [{
+  command: 'export',
+  description: 'exports the block in json format'
+}];
+var options = [{
+  option: '-p',
+  alias: '--path',
+  description: '<string> The location to the folder which has the blockchain db'
+}, {
+  option: '-c',
+  alias: '--cpp',
+  description: 'dumps Alethzero\'s blochchain'
+}, {
+  option: '-n',
+  alias: '--node',
+  description: 'dumps node-ethereum\'s blochchain'
+}];
+
+if (argv.help) {
+  console.log(
+    usageStr +
+    columnify(commands) + '\n\n' +
+    columnify(options)
+  );
+  process.exit();
+}
+
+//set the path
+require('../lib/path.js')(argv);
+
+var detailsDB = levelup(argv.path + 'details');
+var blocksDB = levelup(argv.path + 'blocks');
+
+detailsDB.get('best', {
+  keyEncoding: 'binary',
+  valueEncoding: 'binary'
+}, function(err, best) {
+
+  var more = true;
+  var blocks = [];
+  console.log('[');
+
+  async.whilst(function() {
+    return more;
+  }, function(done) {
+    blocksDB.get(best, {
+      encoding: 'binary'
+    }, function(err, val) {
+      var block = new Block(rlp.decode(val));
+      var json = block.toJSON(true);
+
+      json.hash = block.hash().toString('hex');
+      console.log(JSON.stringify(json));
+
+      best = block.header.parentHash;
+      if (block.header.number.toString('hex') === '01') {
+        more = false;
+      } else {
+        console.log(',');
+      }
+      done();
+    });
+  }, function() {
+    console.log(']');
+  });
+});

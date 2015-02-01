@@ -7,12 +7,15 @@ var argv = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'init'],
   string: ['path', 'root'],
   alias: {
-    'help': 'h'
+    'path': 'p',
+    'help': 'h',
+    'cpp': 'c',
+    'node': 'n'
   }
 });
 
 //set the path
-require('./path.js')(argv);
+require('../lib/path.js')(argv);
 
 switch (argv._[0]) {
   case 'init':
@@ -21,31 +24,31 @@ switch (argv._[0]) {
     break;
 
   case 'export':
-    require('./esm-export.js')(argv);
+    require('../lib/export.js')(argv);
     break;
 
   case 'import':
-    require('./esm-import.js')(argv);
+    require('../lib/import.js')(argv);
     break;
 
   case 'commit':
-    require('./esm-commit.js')(argv);
+    require('../lib/commit.js')(argv);
     break;
 
   case 'checkout':
-    require('./esm-checkout.js')(argv);
+    require('../lib/checkout.js')(argv);
     break;
 
   case 'log':
-    require('./esm-log.js')(argv);
+    require('../lib/log.js')(argv);
     break;
 
   case 'account':
-    require('./esm-account.js')(argv);
+    require('../lib/account.js')(argv);
   break;
 
   case 'status':
-    require('./esm-status.js')(argv);
+    require('../lib/status.js')(argv);
   break;
 
   default:

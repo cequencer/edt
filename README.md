@@ -1,4 +1,4 @@
-# SYNOPSIS
+# SYNOPSIS [![Build Status](https://travis-ci.org/wanderer/ethereumjs-tools.svg)](https://travis-ci.org/wanderer/ethereumjs-tools)
 A collection of tools for develpment
 
 # bcm

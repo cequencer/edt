@@ -6,10 +6,10 @@
   "scripts": {
     "test": "mocha ./test/*.js"
   },
-  {
-    "bcm" : "./bin/bcm",
-    "esm" : "./bin/esm",
-    "vm"  : "./bin/vm" 
+  "bin": {
+    "bcm": "./bin/bcm",
+    "esm": "./bin/esm",
+    "vm": "./bin/vm"
   },
   "dependencies": {
     "JSONStream": "^0.9.0",

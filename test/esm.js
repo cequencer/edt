@@ -7,8 +7,7 @@ var crypto = require('crypto')
 var spawn = require('child_process').spawn
 var fs = require('fs')
 var Trie = Eth.Trie
-
-var db = level(__dirname + '/tmp/state')
+var db = level(__dirname + '/state')
 var trie = new Trie(db)
 var randomStrings = []
 var root
@@ -32,7 +31,7 @@ describe('testing esm', function() {
     trie.db.close(function() {
 
       var exported = ''
-      var emsExport = spawn(__dirname + '/../bin/esm', ['export', '--path', __dirname + '/tmp', '--root', root.toString('hex')])
+      var emsExport = spawn(__dirname + '/../bin/esm', ['export', '--path', __dirname, '--root', root.toString('hex')])
 
       emsExport.stdout.on('data', function(data) {
         exported += data
@@ -60,7 +59,7 @@ describe('testing esm', function() {
   })
 
   it('should import', function(done) {
-    var emsImport = spawn(__dirname + '/../bin/esm', ['import', __dirname + '/tmp.json', '--path', __dirname + '/tmp2'])
+    var emsImport = spawn(__dirname + '/../bin/esm', ['import', __dirname + '/tmp.json', '--path', __dirname])
 
     emsImport.stderr.on('data', function(data) {
       done(data.toString())
@@ -74,7 +73,7 @@ describe('testing esm', function() {
   it('should export everything that was imported', function(done) {
 
     var exported = ''
-    var emsExport = spawn(__dirname + '/../bin/esm', ['export', '--path', __dirname + '/tmp2', '--root', root.toString('hex')])
+    var emsExport = spawn(__dirname + '/../bin/esm', ['export', '--path', __dirname, '--root', root.toString('hex')])
 
     emsExport.stdout.on('data', function(data) {
       exported += data;
@@ -107,7 +106,7 @@ describe('testing esm', function() {
   })
 
   it('it should commit', function(done){
-    var emsCommit = spawn(__dirname + '/../bin/esm', ['commit', 'this is a test' , '--path', __dirname + '/tmp2'])
+    var emsCommit = spawn(__dirname + '/../bin/esm', ['commit', 'this is a test' , '--path', __dirname])
 
     emsCommit.stderr.on('data', function(data) {
       done(data.toString());
@@ -119,7 +118,7 @@ describe('testing esm', function() {
   })
 
   it('it should create a log', function(done){
-    var emsLog = spawn(__dirname + '/../bin/esm', ['log', '--path', __dirname + '/tmp2'])
+    var emsLog = spawn(__dirname + '/../bin/esm', ['log', '--path', __dirname ])
 
     emsLog.stderr.on('data', function(data) {
       done(data.toString());
@@ -131,7 +130,7 @@ describe('testing esm', function() {
   })
     
   it('it should give a status', function(done){
-    var emsStatus = spawn(__dirname + '/../bin/esm', ['status', '--path', __dirname + '/tmp2'])
+    var emsStatus = spawn(__dirname + '/../bin/esm', ['status', '--path', __dirname])
 
     emsStatus.stderr.on('data', function(data) {
       done(data.toString());
@@ -143,7 +142,7 @@ describe('testing esm', function() {
   })
 
   it('it should add an account', function(done){
-    var emsAccount = spawn(__dirname + '/../bin/esm', ['account', 'add', '--path', __dirname + '/tmp2'])
+    var emsAccount = spawn(__dirname + '/../bin/esm', ['account', 'add', '--path', __dirname])
 
     emsAccount.stderr.on('data', function(data) {
       done(data.toString());

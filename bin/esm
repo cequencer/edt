@@ -20,7 +20,7 @@ require('../lib/path.js')(argv);
 switch (argv._[0]) {
   case 'init':
     console.log('initializing state db');
-    fs.mkdir('./.ethereum', function() {});
+    fs.mkdir(__dirname +  '/.ethereum', function() {});
     break;
 
   case 'export':

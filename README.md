@@ -1,7 +1,7 @@
-# NAME
+# NAME [![Build Status](https://travis-ci.org/wanderer/ethereumjs-tools.svg)](https://travis-ci.org/wanderer/ethereumjs-tools)
   edt - ethereum development tool
 
-# SYNOPSIS [![Build Status](https://travis-ci.org/wanderer/ethereumjs-tools.svg)](https://travis-ci.org/wanderer/ethereumjs-tools)
+# SYNOPSIS 
 A collection of tools for develpment
 
 # bcm

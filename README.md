@@ -9,7 +9,7 @@ BlockChain Manager (bcm) allows you to export the blockchain as json
 
 
 # COMMANDS                     
-`export - exports the block in json format`
+`export - exports the blockchain in json format`
 
 # OPTIONS                                                   
 ```

@@ -1,4 +1,4 @@
-# NAME [![Build Status](https://travis-ci.org/wanderer/ethereumjs-tools.svg)](https://travis-ci.org/wanderer/ethereumjs-tools)
+# NAME [![Build Status](https://travis-ci.org/wanderer/edt.svg?branch=master)](https://travis-ci.org/wanderer/edt)
   edt - ethereum development tool
 
 # SYNOPSIS 

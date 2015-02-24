@@ -20,6 +20,8 @@ BlockChain Manager (bcm) allows you to export the blockchain as json
 -c     --cpp  dumps Alethzero's blochchain                                   
 -n     --node dumps node-ethereum's blochchain     
 -l     --limit limits number of block to dump by a given number                                                         
--s     --start the hash to start dumping the blockchain. By default bcm loads the best block and works backwards to the genisis hash. Usally only the first couple of bytes of a hash are needed.
+-s     --start the hash to start dumping the blockchain. 
+               By default bcm loads the best block and works backwards to the genisis hash.
+               Usally only the first couple of bytes of a hash are needed.
 
 ```

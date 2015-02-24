@@ -8,13 +8,15 @@ var columnify = require('columnify');
 var parseArgs = require('minimist');
 
 var argv = parseArgs(process.argv.slice(2), {
-  boolean: ['h', 'init'],
+  boolean: ['h', 'r', 'init'],
   string: ['path', 'root'],
   alias: {
     'help': 'h',
     'path': 'p',
     'cpp': 'c',
-    'node': 'n'
+    'node': 'n',
+    'limit': 'l',
+    'start': 's'
   }
 });
 
@@ -28,7 +30,7 @@ var commands = [{
 var options = [{
   option: '-p',
   alias: '--path',
-  description: '<string> The location to the folder which has the blockchain db'
+  description: 'The location to the folder which has the blockchain db'
 }, {
   option: '-c',
   alias: '--cpp',
@@ -37,6 +39,14 @@ var options = [{
   option: '-n',
   alias: '--node',
   description: 'dumps node-ethereum\'s blochchain'
+}, {
+  option: '-l',
+  alias: '--limit',
+  description: 'limits number of block to dump by a given number'
+}, {
+  option: '-s',
+  alias: '--start',
+  description: 'the hash to start dumping the blockchain. By default bcm loads the best block and works backwards to the genisis hash'
 }];
 
 if (argv.help) {
@@ -54,29 +64,88 @@ require('../lib/path.js')(argv);
 var detailsDB = levelup(argv.path + 'details');
 var blocksDB = levelup(argv.path + 'blocks');
 
-detailsDB.get('best', {
-  keyEncoding: 'binary',
-  valueEncoding: 'binary'
-}, function(err, best) {
+function gestStart(args, cb) {
+  if (args.start && args.start.length === 64) {
+    
+    cb(new Buffer(args.start, 'hex'));
+  } else if (args.start) {
+    getSingleBlock(args.start, cb);
+  } else{
+    getBest(cb);
+  }
+}
+
+function getSingleBlock(start, cb) {
+
+  if (start.length % 2) {
+    start = start + '0';
+  }
+
+  try {
+    start = new Buffer(start, 'hex');
+  } catch (e) {
+    console.error('invalid hex string');
+    process.exit();
+  }
+
+  var rs = blocksDB.createReadStream({
+    keyEncoding: 'binary',
+    valueEncoding: 'binary',
+    gte: start,
+    limit: 1
+  });
+
+  rs.on('data', function(data){
+    cb(data.key);
+  });
+}
+
+function getBest(cb) {
+  detailsDB.get('best', {
+    keyEncoding: 'binary',
+    valueEncoding: 'binary'
+  }, function(err, val){
+    cb(val);
+  });
+}
+
+function getBlockChain(start, limit) {
+
+  if (!start) {
+    console.log('[]');
+    process.exit();
+  }
 
   var more = true;
   var blocks = [];
+  var numBlocks = 0;
+
   console.log('[');
 
   async.whilst(function() {
     return more;
   }, function(done) {
-    blocksDB.get(best, {
-      encoding: 'binary'
+    blocksDB.get(start, {
+      keyEncoding: 'binary',
+      valueEncoding: 'binary'
     }, function(err, val) {
+
+      if(err){
+        console.log(']');
+        console.log(err.toString());
+        process.exit();
+      }
+
       var block = new Block(rlp.decode(val));
       var json = block.toJSON(true);
 
       json.hash = block.hash().toString('hex');
       console.log(JSON.stringify(json));
 
-      best = block.header.parentHash;
-      if (block.header.number.toString('hex') === '01') {
+      start = block.header.parentHash;
+      numBlocks++;
+
+      if (block.header.number.toString('hex') === '01' || numBlocks == limit) {
         more = false;
       } else {
         console.log(',');
@@ -86,4 +155,8 @@ detailsDB.get('best', {
   }, function() {
     console.log(']');
   });
+}
+
+gestStart(argv, function(start){
+  getBlockChain(start, argv.limit);
 });

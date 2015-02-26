@@ -3,6 +3,11 @@
 var fs = require('fs'),
   parseArgs = require('minimist');
 
+const ethereum = require('ethereumjs-lib');
+const Trie = ethereum.Trie;
+const levelup = require('level');
+const sublevel = require('level-sublevel');
+
 var argv = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'init'],
   string: ['path', 'root'],
@@ -18,13 +23,34 @@ var argv = parseArgs(process.argv.slice(2), {
 require('../lib/path.js')(argv);
 
 switch (argv._[0]) {
+
   case 'init':
     console.log('initializing state db');
-    fs.mkdir(__dirname +  '/.ethereum', function() {});
+    fs.mkdir(__dirname + '/.ethereum', function() {});
     break;
 
   case 'export':
-    require('../lib/export.js')(argv);
+
+    var state;
+    var statePath;
+    var stateDB;
+
+    if(fs.existsSync(argv.path + 'state')){
+      statePath = argv.path + 'state';
+      stateDB = levelup(statePath);
+    }else if(fs.existsSync(argv.path)){
+      //else using sublevel
+      //try level-sublevel
+      statePath = argv.path;
+      stateDB = sublevel(levelup(statePath));
+    }else{
+      console.log('invalid path, no db found');
+    }
+
+    state = new Trie(stateDB);
+
+    require('../lib/export.js')(argv, state, stateDB);
+
     break;
 
   case 'import':
@@ -45,11 +71,11 @@ switch (argv._[0]) {
 
   case 'account':
     require('../lib/account.js')(argv);
-  break;
+    break;
 
   case 'status':
     require('../lib/status.js')(argv);
-  break;
+    break;
 
   default:
     var helpStr = '\

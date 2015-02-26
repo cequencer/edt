@@ -17,6 +17,7 @@
     "columnify": "^1.4.1",
     "ethereumjs-lib": "^0.1.6",
     "level": "^0.18.0",
+    "level-sublevel": "^6.4.6",
     "minimist": "^1.1.0",
     "rlp": "0.0.12",
     "secp256k1": "0.0.13",

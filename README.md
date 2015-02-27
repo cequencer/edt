@@ -23,5 +23,21 @@ BlockChain Manager (bcm) allows you to export the blockchain as json
 -s     --start the hash to start dumping the blockchain. 
                By default bcm loads the best block and works backwards to the genisis hash.
                Usally only the first couple of bytes of a hash are needed.
+```
 
+# esm
+The Ethereum State Manager (esm) allows you to export the currect state of ethereum in json 
+
+# USAGE
+`esm <command> [OPTION] `
+
+
+# COMMANDS                     
+`export - exports the blockchain in json format`
+
+# OPTIONS                                                   
+```
+-p     --path The location to the folder which has the state db
+-c     --cpp  dumps Alethzero's state                          
+-n     --node dumps node-ethereum's state 
 ```

@@ -59,8 +59,7 @@ if (argv.help) {
 }
 
 //set the path
-require('../lib/path.js')(argv);
-
+dep.path(argv);
 var detailsDB = dep.getDB('details', argv);
 var blocksDB = dep.getDB('blocks', argv);
 

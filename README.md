@@ -11,14 +11,14 @@ A collection of tools for develpment
 # bcm
 BlockChain Manager (bcm) allows you to export the blockchain as json 
 
-# USAGE
+## USAGE
 `bcm <command> [OPTION] `
 
 
-# COMMANDS                     
+## COMMANDS                     
 `export - exports the blockchain in json format`
 
-# OPTIONS                                                   
+## OPTIONS                                                   
 ```
 -p     --path The location to the folder which has the blockchain db
 -c     --cpp  dumps Alethzero's blochchain                                   

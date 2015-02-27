@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+var fs = require('fs'),
+  parseArgs = require('minimist')
+  bignum = require('bignum');
+
+var argv = parseArgs(process.argv.slice(2));
+
+var fromEsmExport = require(argv._[0]);
+
+var formatForTests = {};
+
+for (account in fromEsmExport) {
+  formatForTests[account] = { 'code': '0x' + fromEsmExport[account].code };
+
+  formatForTests[account].nonce = bignum(fromEsmExport[account].nonce).toString();
+
+  formatForTests[account].balance = bignum(fromEsmExport[account].balance).toString();
+
+  formatForTests[account].storage = {};
+  for (key in fromEsmExport[account].storage) {
+    formatForTests[account].storage['0x'+key] = '0x'+fromEsmExport[account].storage[key];
+  }
+}
+
+console.log(JSON.stringify(formatForTests));

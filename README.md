@@ -32,14 +32,14 @@ BlockChain Manager (bcm) allows you to export the blockchain as json
 # esm
 The Ethereum State Manager (esm) allows you to export the currect state of ethereum in json 
 
-# USAGE
+## USAGE
 `esm <command> [OPTION] `
 
 
-# COMMANDS                     
+## COMMANDS                     
 `export - exports the blockchain in json format`
 
-# OPTIONS                                                   
+## OPTIONS                                                   
 ```
 -p     --path The location to the folder which has the state db
 -c     --cpp  dumps Alethzero's state                          

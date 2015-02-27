@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-var levelup = require('level');
-var Block = require('ethereumjs-lib').Block;
-var async = require('async');
-var rlp = require('rlp');
-var columnify = require('columnify');
-var parseArgs = require('minimist');
+const Block = require('ethereumjs-lib').Block;
+const async = require('async');
+const rlp = require('rlp');
+const columnify = require('columnify');
+const parseArgs = require('minimist');
+const dep = require('../lib/dependant.js');
 
 var argv = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'r', 'init'],
@@ -61,8 +61,8 @@ if (argv.help) {
 //set the path
 require('../lib/path.js')(argv);
 
-var detailsDB = levelup(argv.path + 'details');
-var blocksDB = levelup(argv.path + 'blocks');
+var detailsDB = dep.getDB('details', argv);
+var blocksDB = dep.getDB('blocks', argv);
 
 function gestStart(args, cb) {
   if (args.start && args.start.length === 64) {
@@ -71,7 +71,7 @@ function gestStart(args, cb) {
   } else if (args.start) {
     getSingleBlock(args.start, cb);
   } else{
-    getBest(cb);
+    dep.getBest(detailsDB, cb);
   }
 }
 
@@ -97,15 +97,6 @@ function getSingleBlock(start, cb) {
 
   rs.on('data', function(data){
     cb(data.key);
-  });
-}
-
-function getBest(cb) {
-  detailsDB.get('best', {
-    keyEncoding: 'binary',
-    valueEncoding: 'binary'
-  }, function(err, val){
-    cb(val);
   });
 }
 

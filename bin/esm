@@ -1,12 +1,9 @@
 #!/usr/bin/env node
-
-var fs = require('fs'),
-  parseArgs = require('minimist');
-
+const fs = require('fs');
+const parseArgs = require('minimist');
 const ethereum = require('ethereumjs-lib');
 const Trie = ethereum.Trie;
-const levelup = require('level');
-const sublevel = require('level-sublevel');
+const dep = require('../lib/dependant.js');
 
 var argv = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'init'],
@@ -20,7 +17,7 @@ var argv = parseArgs(process.argv.slice(2), {
 });
 
 //set the path
-require('../lib/path.js')(argv);
+dep.path(argv);
 
 switch (argv._[0]) {
 
@@ -31,23 +28,8 @@ switch (argv._[0]) {
 
   case 'export':
 
-    var state;
-    var statePath;
-    var stateDB;
-
-    if(fs.existsSync(argv.path + 'state')){
-      statePath = argv.path + 'state';
-      stateDB = levelup(statePath);
-    }else if(fs.existsSync(argv.path)){
-      //else using sublevel
-      //try level-sublevel
-      statePath = argv.path;
-      stateDB = sublevel(levelup(statePath));
-    }else{
-      console.log('invalid path, no db found');
-    }
-
-    state = new Trie(stateDB);
+    var stateDB = dep.getDB('state', argv);
+    var state = new Trie(stateDB);
 
     require('../lib/export.js')(argv, state, stateDB);
 

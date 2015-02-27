@@ -4,6 +4,7 @@ const parseArgs = require('minimist');
 const ethereum = require('ethereumjs-lib');
 const Trie = ethereum.Trie;
 const dep = require('../lib/dependant.js');
+const columnify = require('columnify');
 
 var argv = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'init'],
@@ -15,6 +16,28 @@ var argv = parseArgs(process.argv.slice(2), {
     'node': 'n'
   }
 });
+
+var usageStr = 'USAGE: esm <command> [OPTION] \n\
+The Ethereum State Manager (esm) allows you to export the currect state of \n\
+ethereum in json \n\n';
+
+var commands = [{
+  command: 'export',
+  description: 'exports the state in json format'
+}];
+var options = [{
+  option: '-p',
+  alias: '--path',
+  description: 'The location to the folder which has the state db'
+}, {
+  option: '-c',
+  alias: '--cpp',
+  description: 'dumps Alethzero\'s state'
+}, {
+  option: '-n',
+  alias: '--node',
+  description: 'dumps node-ethereum\'s state'
+}];
 
 //set the path
 dep.path(argv);
@@ -59,11 +82,12 @@ switch (argv._[0]) {
     require('../lib/status.js')(argv);
     break;
 
+  case 'help':
   default:
-    var helpStr = '\
-    usage: import [path_to_state_dump.json] --path \n\
-    --path <string> The location of a state DB\n\
-    ';
-
-    console.log(helpStr);
+   console.log(
+      usageStr +
+      columnify(commands) + '\n\n' +
+      columnify(options)
+    );
+    process.exit();
 }

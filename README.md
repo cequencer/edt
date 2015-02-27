@@ -4,6 +4,10 @@
 # SYNOPSIS 
 A collection of tools for develpment
 
+#TOOLS
+- [bcm](#bcm)
+- [esm](#esm)
+
 # bcm
 BlockChain Manager (bcm) allows you to export the blockchain as json 
 

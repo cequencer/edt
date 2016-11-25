@@ -28,6 +28,6 @@
   "author": "Martin Becze",
   "license": "GPL",
   "devDependencies": {
-    "mocha": "^3.1.2"
+    "mocha": "^3.2.0"
   }
 }

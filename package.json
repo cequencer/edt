@@ -21,7 +21,7 @@
     "level-sublevel": "^6.4.6",
     "minimist": "^1.1.0",
     "rlp": "2.0.0",
-    "secp256k1": "3.2.2",
+    "secp256k1": "3.2.5",
     "semaphore": "^1.0.1",
     "through": "^2.3.6"
   },

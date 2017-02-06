@@ -17,7 +17,7 @@
     "bignum": "^0.12.5",
     "columnify": "^1.4.1",
     "ethereumjs-lib": "^3.0.0",
-    "level": "^1.5.0",
+    "level": "^1.6.0",
     "level-sublevel": "^6.4.6",
     "minimist": "^1.1.0",
     "rlp": "2.0.0",

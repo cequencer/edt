@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "JSONStream": "^1.2.1",
-    "async": "^2.1.4",
+    "async": "2.1.4",
     "bignum": "^0.12.5",
     "columnify": "^1.4.1",
     "ethereumjs-lib": "^3.0.0",
